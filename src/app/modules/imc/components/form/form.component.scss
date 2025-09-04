@@ -1,0 +1,92 @@
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.input-field {
+  margin-bottom: 15px;
+  flex: 1;
+  width: 100%;
+}
+
+.input-group p-inputNumber {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.input-group label {
+  
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-group p-button {
+  display: flex;
+  gap: 10px;
+}
+
+.button-group{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+p-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  background-color: #d4edda;
+  color: #155724;
+  text-align: center;
+}
+
+.error {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #dc3545;
+  border-radius: 4px;
+  background-color: #f8d7da;
+  color: #721c24;
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .form-container {
+    padding: 15px;
+  }
+
+  button {
+    padding: 8px;
+  }
+}
+
+
+
+

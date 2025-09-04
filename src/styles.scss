@@ -1,0 +1,109 @@
+@import "primeicons/primeicons.css";
+@import 'fonts/fonts.css';
+
+@layer reset, primeng;
+
+@layer reset {
+  button {
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+:root {
+  --primary-color: #00B0FF;
+  --secondary-color: white;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+  font-family: 'Poppins', sans-serif;
+}
+
+.grid {
+  // height: 100vh;
+
+  @media screen and (min-width: 1400px) {
+      background-position: top;
+  }
+
+  @media screen and (max-width: 1000px) {
+    // height: 100vmax;
+  }
+
+}
+
+.card {
+  @media screen and (max-width: 1000px) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+
+h3,h1,h2 {
+  margin: 0;
+  padding: auto;
+}
+
+.p-tabmenu-nav {
+  gap: .4rem;
+}
+
+.no-border-radius {
+  border-radius: 0 0 5px 5px !important;
+}
+
+.all-container{
+  margin: 5px;
+}
+
+// Own DropDown Input
+.special-input{
+  *:nth-child(1){
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+}
+
+.action-button{
+  background-color: #0E574E;
+  border-color: #0E574E;
+  color: white;
+
+  :nth-child(1){
+    color: white;
+    }
+}
+
+*{
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #AAA;
+  }
+}
+
+.main-div{
+  z-index: 999 !important;
+}
+
+.shadow-div{
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 99;
+}

@@ -1,0 +1,17 @@
+<div class="form-container">
+  <div class="input-group">
+    <div class="input-field">
+      <label for="peso">Peso (kg)</label>
+      <p-inputNumber id="peso" [(ngModel)]="peso" (keyup.enter)="calcularImc()" mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="2"></p-inputNumber>
+      <label for="altura">Altura (cm)</label>
+      <p-inputNumber id="altura" [(ngModel)]="altura" (keyup.enter)="calcularImc()" mode="decimal" [minFractionDigits]="0" [maxFractionDigits]="2"></p-inputNumber>
+    </div>
+    
+  </div>
+  <div class="button-group">
+    <p-button label="Calcular IMC" icon="pi pi-chart-bar" (onClick)="calcularImc()"></p-button>
+    <p-button label="Ver Histórico Completo" icon="pi pi-table" [routerLink]="['/history']" styleClass="p-mt-4"></p-button>
+  </div>
+</div>
+
+<p-toast></p-toast>

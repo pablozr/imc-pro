@@ -1,0 +1,44 @@
+.p-toolbar {
+  position: sticky;
+  position: -webkit-sticky; // Needed for Safari browsers.
+  z-index: 10000; // This prevents elements to be seen through the toolbar.
+  top: 0; // Required for "position: sticky" to take effect.
+}
+
+.notification{
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  background-color: transparent;
+  border: none;
+
+  &::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(231, 43, 43);
+
+    position: absolute;
+
+    top: -4px;
+    right: -1px;
+    // border: 2px solid transparent;
+}
+
+  &{
+    animation: balancar 2.5s ease-in-out infinite;
+  }
+
+  @keyframes balancar {
+    0% {
+        transform: rotate(12deg);
+    }
+    50% {
+        transform: rotate(-12deg);
+    }
+    100% {
+          transform: rotate(12deg);
+    }
+  }
+}
