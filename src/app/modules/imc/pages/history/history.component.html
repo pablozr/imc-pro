@@ -17,7 +17,7 @@
         <tr>
           <td>{{ item.data | date: 'short' }}</td>
           <td>{{ item.peso }}</td>
-          <td>{{ item.altura }}</td>
+          <td>{{ item.altura | currency: 'BRL' }}</td>
           <td>{{ item.imc }}</td>
           <td>{{ item.classificacao }}</td>
         </tr>
@@ -30,7 +30,12 @@
   </p-card>
 
   <p-card header="Gráfico de IMC por data">
-    <app-imc-chart></app-imc-chart>
+    <div class="chart-container">
+      <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+    </div>
+    <div *ngIf="!chartData?.labels" class="empty-message">
+      <p>Calcule seu primeiro IMC para ver o gráfico.</p>
+    </div>
   </p-card>
 
   <div class="button-container p-mt-4">

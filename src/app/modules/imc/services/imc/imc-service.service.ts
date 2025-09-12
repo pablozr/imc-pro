@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { imc } from '../interfaces/Iimc';
+import { inject, Injectable } from '@angular/core';
+import { imc } from '../../interfaces/Iimc';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -9,41 +10,45 @@ export class ImcService {
   private readonly imcStorageKey = 'imcRecords';
   private recordsSubject = new BehaviorSubject<imc[]>(this.loadRecords());
   records$ = this.recordsSubject.asObservable();
-  constructor() { 
+  constructor() {
     this.recordsSubject.next(this.loadRecords());
   }
 
-  calcularIMC(peso: number, altura: number): imc {
-    const alturaEmMetros = altura / 100;
-    const imc = parseFloat((peso / (alturaEmMetros * alturaEmMetros)).toFixed(2));
+  private messageService = inject(MessageService);
 
-    const classificacao = this.getClassificacao(imc);
+  calcularIMC(peso: number | null, altura: number | null): imc {
+    if (peso !== null && altura !== null && peso > 0 && altura > 0) {
+      const alturaEmMetros = altura / 100;
+      const imc = parseFloat((peso / (alturaEmMetros * alturaEmMetros)).toFixed(2));
 
-    const resultado : imc = {
-      peso,
-      altura,
-      imc,
-      classificacao,
-      data: new Date()
-    };
+      const classificacao = this.getClassificacao(imc);
 
-    this.adicionarHistorico(resultado);
-    return resultado;
+      const resultado: imc = {
+        peso,
+        altura,
+        imc,
+        classificacao,
+        data: new Date()
+      };
+
+      this.adicionarHistorico(resultado);
+      this.messageService.add({severity:'success', summary: 'Sucesso', detail: `Seu IMC é ${resultado.imc} (${resultado.classificacao})`});
+      return resultado;
+    }
+    throw new Error('Peso e altura devem ser maiores que zero.');
   }
   private getClassificacao(imc: number): string {
-    if (imc < 18.5) 
+    if (imc < 18.5)
       return 'Abaixo do peso';
-
-    if (imc >= 18.5 && imc < 24.9) 
+    if (imc >= 18.5 && imc < 24.9)
       return 'Peso normal';
-
     if (imc >= 25 && imc < 29.9)
       return 'Sobrepeso';
     if (imc >= 30 && imc < 34.9)
       return 'Obesidade grau 1';
     if (imc >= 35 && imc < 39.9)
       return 'Obesidade grau 2';
-    
+
     return 'Obesidade grau 3';
 
   }

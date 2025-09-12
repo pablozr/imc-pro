@@ -10,8 +10,6 @@
   </div>
   <div class="button-group">
     <p-button label="Calcular IMC" icon="pi pi-chart-bar" (onClick)="calcularImc()"></p-button>
-    <p-button label="Ver Histórico Completo" icon="pi pi-table" [routerLink]="['/history']" styleClass="p-mt-4"></p-button>
+    <p-button label="Ver Histórico Completo" icon="pi pi-table" (onClick)="navigateTo('/history')"  styleClass="p-mt-4"></p-button>
   </div>
 </div>
-
-<p-toast></p-toast>
