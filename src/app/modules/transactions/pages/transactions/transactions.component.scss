@@ -1,0 +1,87 @@
+.transactions-container {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem;
+
+    p-card{
+        width: 100%;
+        max-width: 800px;
+        
+
+        ::ng-deep .p-card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        ::ng-deep .p-card-footer {
+            display: flex;
+            justify-content: center;
+        }
+
+        .date-picker {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+    }
+
+    .income-color {
+        color: green;
+        font-weight: bold;
+    }
+
+    .expense-color {
+        color: red;
+        font-weight: bold;
+    }
+
+    ::ng-deep {
+
+    
+    .p-dialog .p-dialog-content {
+      .p-fluid {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem; 
+      }
+    }
+
+    .p-dialog .p-dialog-header .p-dialog-title {
+      flex-grow: 1;
+      text-align: center;
+    }
+    
+    .p-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem; 
+    }
+    
+    label {
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    select.p-inputtext {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem; 
+    }
+
+    .p-dialog .p-dialog-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem; 
+      
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+      border-top: 1px solid #dee2e6;
+    }
+  }
+}

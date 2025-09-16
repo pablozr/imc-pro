@@ -1,0 +1,96 @@
+<app-header></app-header>
+<div class="transactions-container">
+    <p-card header="Controle financeiro">
+        <div class="date-picker">
+            <p-calendar [(ngModel)]="mesAnoSelecionado" view="month" (onSelect)="viewByPeriod()"dateFormat="mm/yy" placeholder="Selecione o mês e ano"></p-calendar>
+        </div>
+        <p-table [value]="transactions" class="p-mt-3">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Tipo</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-transaction>
+                <tr>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.description }}</td>
+                    <td [ngClass]="{'income-color': transaction.type === 'income', 'outcome-color': transaction.type === 'expense'}">{{ transaction.amount | currency: 'BRL' }}</td>
+                    <td>{{ transaction.type }}</td>
+                    <td>
+                        <button pButton type="button" icon="pi pi-pencil" (click) ="openEditModal(transaction)"class="p-button-rounded p-button-success p-mr-2"></button>
+                        <button pButton type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <ng-template pTemplate="footer">
+            <p-button label="Adicionar transação" icon="pi pi-plus" (click)="showAddModalDialog()"></p-button>
+        </ng-template>
+    </p-card>
+    <p-dialog header="Editar Transação" [(visible)]="displayEditModal" [modal]="true" [closable]="true" [style]="{width: '600px'}">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="valor">Valor</label>
+                <p-inputNumber id="valor" [(ngModel)]="newTransaction.amount" mode="currency" currency="BRL" placeholder="Valor" ></p-inputNumber>
+            </div>
+            <div class="p-field">
+                <label for="descricao">Descrição</label>
+                <input id="descricao" type="text" pInputText [(ngModel)]="newTransaction.description" placeholder="Descrição da transação">
+            </div>
+            <div class="p-field">
+                <label for="category_id">Categoria</label>
+                <select id="category_id" [(ngModel)]="newTransaction.category_id" class="p-inputtext">
+                    <option [ngValue]="null" disabled selected>Selecione uma categoria</option>
+                    @for (category of categories; track category.id) {
+                        <option [value]="category.id">
+                            {{ category.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <p-button label="Cancelar" icon="pi pi-times" (click)="displayAddModal=false" class="p-button-text"></p-button>
+            <p-button label="Salvar" icon="pi pi-check" (click)="updateTransaction()" autoFocus></p-button>
+        </ng-template>
+    </p-dialog>
+    <p-dialog header="Adicionar Transação" [(visible)]="displayAddModal" [modal]="true" [closable]="true" [style]="{width: '600px'}">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="valor">Valor</label>
+                <p-inputNumber id="valor" [(ngModel)]="newTransaction.amount" mode="currency" currency="BRL" placeholder="Valor" ></p-inputNumber>
+            </div>
+            <div class="p-field">
+                <label for="descricao">Descrição</label>
+                <input id="descricao" type="text" pInputText [(ngModel)]="newTransaction.description" placeholder="Descrição da transação">
+            </div>
+            <div class="p-field">
+                <label for="category_id">Categoria</label>
+                <select id="category_id" [(ngModel)]="newTransaction.category_id" class="p-inputtext">
+                    <option [ngValue]="null" disabled selected>Selecione uma categoria</option>
+                    @for (category of categories; track category.id) {
+                        <option [value]="category.id">
+                            {{ category.name }}
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="p-field">
+                <label for="tipo">Tipo</label>
+                <select id="tipo" [(ngModel)]="newTransaction.type" class="p-inputtext" placeholder="Selecione o tipo">
+                    <option value="income">Entrada</option>
+                    <option value="expense">Saída</option>
+                </select>
+            </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <p-button label="Cancelar" icon="pi pi-times" (click)="displayAddModal=false" class="p-button-text"></p-button>
+            <p-button label="Salvar" icon="pi pi-check" (click)="addTransaction()" autoFocus></p-button>
+        </ng-template>
+    </p-dialog>
+
+    
+</div>

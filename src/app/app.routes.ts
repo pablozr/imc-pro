@@ -28,6 +28,16 @@ export const routes: Routes = [
     canActivate: [AuthService]
   },
   {
+    path: 'messages',
+    loadComponent: () => import('./modules/messages/pages/messages/messages.component').then((m) => m.MessagesComponent),
+    canActivate: [AuthService]
+  },
+  {
+    path: 'transactions',
+    loadComponent: () => import('./modules/transactions/pages/transactions/transactions.component').then((m) => m.TransactionComponent),
+    canActivate: [AuthService]
+  },
+  {
     path: '**',
     loadComponent: () => import('./modules/global/pages/not-found/not-found.component').then((m) => m.NotFoundComponent)
   }

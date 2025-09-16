@@ -21,6 +21,7 @@ export class HistoryComponent {
   historico : imc[] = []
   chartData: any;
   chartOptions: any;
+  
 
   imcService = inject(ImcService);
 
@@ -29,6 +30,7 @@ export class HistoryComponent {
       this.historico = records as imc[];
       this.prepareChartData(records);
     });
+
     this.chartOptions = {
       maintainAspectRatio: false,
       aspectRatio: 0.8,

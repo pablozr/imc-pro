@@ -1,0 +1,42 @@
+<app-header></app-header>
+<div class="main-container">
+  <p-card header="Mensagens">
+    <p-table [value]="messages">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Data</th>
+          <th>Remetente</th>
+          <th>Mensagem</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-message>
+        <tr>
+          <td>{{ message.timestamp | date: 'short' }}</td>
+          <td>{{ message.username }}</td>
+          <td>{{ message.content }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    @if(messages.length === 0){
+      <div class="empty-message">
+        <p>Nenhuma mensagem disponível.</p>
+      </div>
+    }
+    <ng-template pTemplate="footer">
+      <p-button label="Adicionar mensagem" icon="pi pi-plus" (onClick)="showDialog()" ></p-button>
+    </ng-template>
+    </p-card>
+
+    <p-dialog header="Adicionar Mensagem" [(visible)]="displayDialog" [modal]="true" [closable]="true" [responsive]="true" [style]="{width: '400px'}">
+      <div class="p-fluid">
+        <div class="p-field">
+          <label for="username">Nome de Usuário</label>
+          <input id="username" type="text" pInputText [(ngModel)]="newMessage.username" />
+        </div>
+        <div class="p-field">
+          <label for="content">Mensagem</label>
+          <textarea id="content" pInputTextarea [(ngModel)]="newMessage.content"></textarea>
+        </div>
+
+        <p-button label="Enviar" icon="pi pi-check" (onClick)="addMessage()" styleClass="p-button-success"></p-button>
+</div>

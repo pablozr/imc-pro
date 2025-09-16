@@ -24,9 +24,11 @@
       </ng-template>
     </p-table>
 
-    <div *ngIf="historico.length === 0" class="empty-message">
-      <p>Nenhum resultado ainda.</p>
-    </div>
+    @if(historico.length === 0){
+      <div class="empty-message">
+        <p>Nenhum resultado ainda.</p>
+      </div>
+    }
   </p-card>
 
   <p-card header="Gráfico de IMC por data">

@@ -1,0 +1,30 @@
+.main-container {
+  margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    p-card{
+        width: 100%;
+        max-width: 800px;
+
+        ::ng-deep .p-card-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        ::ng-deep .p-card-footer{
+            text-align: center;
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .empty-message{
+            text-align: center;
+        }
+
+    }
+    
+}
