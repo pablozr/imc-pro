@@ -10,13 +10,14 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TransactionService } from '../../services/transactions.service';
-import { Observable } from 'rxjs';
-import { T } from '@angular/router/router_module.d-6zbCxc1T';
+import { LoadingComponent } from '../../../global/components/loading/loading.component';
+import { ITransactions } from '../../interfaces/ITransactions';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-transaction',
   standalone: true,
-  imports: [CardModule, ButtonModule, CalendarModule, FormsModule, TableModule, CommonModule, HeaderComponent, DialogModule, InputTextModule, InputNumberModule],
+  imports: [CardModule, ButtonModule, CalendarModule, FormsModule, TableModule, CommonModule, HeaderComponent, DialogModule, InputTextModule, InputNumberModule, LoadingComponent,DatePickerModule],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.scss'
 })
@@ -26,64 +27,116 @@ export class TransactionComponent {
   mesAnoSelecionado: Date = new Date();
   displayAddModal: boolean = false;
   displayEditModal: boolean = false;
-  newTransaction: any = {};
-  transactions: any[] = [];
+  updatedTransaction: Partial<ITransactions> = {};
+  newTransaction: Partial<ITransactions> = {};
+  transactions: ITransactions[] = [];
   categories: any[] = [];
+  balance: number = 0;
+  isLoading = true;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.viewByPeriod()
+    this.loadTransactions()
     this.getCategories()
+
+    this.isLoading = false;
   }
 
-  openEditModal(transaction:any){
-    this.newTransaction = {...transaction}
+  openEditModal(transaction:ITransactions){
+    this.updatedTransaction = { ...transaction };
     this.displayEditModal = true;
   }
 
-  updateTransaction(){
-    this.transactionService.updateTransaction(this.newTransaction).then((response: any) => {
-      if(response && typeof(response) === 'object' && response.data){
+  async updateTransaction(){
+
+    this.isLoading = true;
+
+    if (!this.updatedTransaction || typeof this.updatedTransaction.id !== 'number') {
+      this.isLoading = false;
+    }
+
+    const response = await this.transactionService.updateTransaction(this.updatedTransaction as ITransactions)
+
+    if(response && response.data){
         const index = this.transactions.findIndex(t => t.id === response.data.id);
         if(index !== -1){
           this.transactions[index] = response.data;
           this.displayEditModal = false;
-          this.newTransaction = {};
+          this.updatedTransaction = {};
+          this.loadBalance()
+          this.isLoading = false;
         }
       }
-    })
+
   }
 
-  viewByPeriod(){
-    this.transactionService.getTransactions(this.mesAnoSelecionado).then((response) => {
-      if(response && typeof(response) === 'object'){
+  async loadBalance(){
+
+    this.isLoading = true;
+
+    const response = await this.transactionService.getBalance(this.mesAnoSelecionado);
+
+    if(response && typeof(response) === 'object'){
+      this.balance = Number(response.data.balance ?? 0)
+      this.isLoading = false;
+    } else{
+      this.balance = 0;
+    }
+  }
+
+  async deleteTransaction(transaction:ITransactions){
+
+    this.isLoading = true;
+    const response = await this.transactionService.deleteTransaction(transaction);
+
+    if (response){
+      this.transactions = this.transactions.filter((data: ITransactions) => data.id != transaction.id);
+      this.loadBalance();
+      this.isLoading = false;
+    }
+  }
+
+  async loadTransactions(){
+
+    this.isLoading = true;
+    const response = await this.transactionService.getTransactions(this.mesAnoSelecionado);
+
+     if(response && typeof(response) === 'object'){
         this.transactions = response.data
+        this.loadBalance()
+        this.isLoading = false;
       }else{
+        this.loadBalance()
         this.transactions = []
       }
-    })
   }
 
-  getCategories(){
-    this.transactionService.getCategories().then((response) => {
+  async getCategories(){
+
+    const response = await this.transactionService.getCategories();
+
     if(response && typeof(response) === 'object'){
       this.categories = response.data
     }  
-    })
   }
 
-  addTransaction(){
-    this.transactionService.addTransaction(this.newTransaction).then((response) => {
-      if(response && typeof(response) === 'object'){
-        this.transactions = [...this.transactions,response]
+  async addTransaction(){
+
+    if (!this.newTransaction || typeof this.newTransaction.id !== 'number') {
+      this.isLoading = false;
+    }
+
+    const response = await this.transactionService.addTransaction(this.newTransaction as ITransactions);
+
+    if(response && typeof(response) === 'object'){
+        this.transactions = [response.data,...this.transactions]
         this.displayAddModal = false
         this.newTransaction ={}
+        this.loadBalance()
       }
-    })
   }
-
 
   showAddModalDialog() {
     this.displayAddModal = true;
