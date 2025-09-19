@@ -70,6 +70,10 @@
             <div class="date-picker">
                 <p-datepicker [(ngModel)]="mesAnoSelecionado" view="month" (onSelect)="loadTransactions()"dateFormat="mm/yy" placeholder="Selecione o mês e ano"></p-datepicker>
             </div>
+            <div class="search">
+                <label for="search">Search bar</label>
+                <input id="descricao" type="text" pInputText [(ngModel)]="searchInput" (ngModelChange)="onSearchChange()" placeholder="Procure">
+            </div>
             <p-table [value]="transactions" class="p-mt-3">
                 <ng-template pTemplate="header">
                     <tr>

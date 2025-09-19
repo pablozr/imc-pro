@@ -16,12 +16,12 @@ export class TransactionService {
   constructor() { }
   
 
-  public getTransactions(date:Date): Promise<IGetTransactionsResponse | false>{
+  public getTransactions(date:Date, description:string): Promise<IGetTransactionsResponse | false>{
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
 
     return new Promise((resolve, _) => {
-      this.http.get<IGetTransactionsResponse>(`${this.apiUrl}?mes=${month}&ano=${year}`).subscribe({
+      this.http.get<IGetTransactionsResponse>(`${this.apiUrl}?mes=${month}&ano=${year}&description=${description}`).subscribe({
         next: (value) => {
             resolve(value);
         },

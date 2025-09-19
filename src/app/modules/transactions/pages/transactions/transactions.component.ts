@@ -13,6 +13,7 @@ import { TransactionService } from '../../services/transactions.service';
 import { LoadingComponent } from '../../../global/components/loading/loading.component';
 import { ITransactions } from '../../interfaces/ITransactions';
 import { DatePickerModule } from 'primeng/datepicker';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-transaction',
@@ -27,21 +28,34 @@ export class TransactionComponent {
   mesAnoSelecionado: Date = new Date();
   displayAddModal: boolean = false;
   displayEditModal: boolean = false;
+  searchInput: string = '';
   updatedTransaction: Partial<ITransactions> = {};
   newTransaction: Partial<ITransactions> = {};
   transactions: ITransactions[] = [];
   categories: any[] = [];
   balance: number = 0;
   isLoading = true;
+  searchSubject = new Subject<string>();
+  searchSubscription: Subscription = new Subscription();
 
   constructor() {
   }
 
   ngOnInit() {
+    this.searchSubscription = this.searchSubject.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+    ).subscribe(() => {
+      this.loadTransactions();
+    })
     this.loadTransactions()
     this.getCategories()
 
     this.isLoading = false;
+  }
+
+  onSearchChange(): void{
+    this.searchSubject.next(this.searchInput);
   }
 
   openEditModal(transaction:ITransactions){
@@ -101,7 +115,7 @@ export class TransactionComponent {
   async loadTransactions(){
 
     this.isLoading = true;
-    const response = await this.transactionService.getTransactions(this.mesAnoSelecionado);
+    const response = await this.transactionService.getTransactions(this.mesAnoSelecionado, this.searchInput);
 
      if(response && typeof(response) === 'object'){
         this.transactions = response.data
